@@ -47,6 +47,9 @@ function typeParse(mt) {
         case "MT_RETRIEVAL":
             res = "Détournement";
             break;
+        case "MT_SURVIVAL":
+            res = "Survie";
+            break;
         default:
             res = mt;
             break;
@@ -57,19 +60,36 @@ function typeParse(mt) {
 function sectorParse(sn) {
     var res;
     var id = sn.substring(sn.lastIndexOf('e') + 1);
-    console.log(id);
     switch (id) {
         case "42":
             res = "Saturn / Hélène";
+            break;
+        case "52":
+            res = "Uranus / Portia";
             break;
         case "65":
             res = "Mars / Gradivus";
             break;
         case "75":
-            res = "Mars / Gradivus";
+            res = "Terre / Lua";
+            break;
+        case "78":
+            res = "Neptune / Triton";
+            break;
+        case "121":
+            res = "Jupiter / Carpo";
             break;
         case "125":
             res = "Jupiter / Io";
+            break;
+        case "135":
+            res = "Céres / Thon";
+            break;
+        case "155":
+            res = "Eris / Cosis";
+            break;
+        case "207":
+            res = "Europe / Gamygyn";
             break;
         default:
             res = sn;
