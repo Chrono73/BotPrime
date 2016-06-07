@@ -1,6 +1,6 @@
 /* 
  * Lien à mettre dans le navigateur pour intégrer le bot à un chan:
- * https://discordapp.com/oauth2/authorize?client_id=186902786443575296&scope=bot&permissions=66186303
+ * https://discordapp.com/oauth2/authorize?client_id=188203858860703744&scope=bot&permissions=66186303
  * 
  * Laisser les permissions suivantes, décocher les autres:
  *      - Se connecter                          - Lire, gérer & envoyer des messages
@@ -13,6 +13,15 @@ var Discord = require("discord.js");
 var request = require("request");
 
 var botPrime = new Discord.Client();
+
+var kenOneLiners = [
+    "Décidément les temps comme les oeufs sont durs, et la bêtise...\n..n'a pas de limites.",
+    "Les machoires de mes ennemis sont comme le téléphone.\nAprès quelques coups, ça décroche.",
+    "Nooooon! T'as cassé ma montre!",
+    "Nooon! Tu peux pas me laisser comme ça, comme un chien!\nDonne moi au moins, euh, je sais pas moi, de la pâtée!",
+    "Evidemment, qui pourrait croire une seconde qu'une vielle femme aussi horrible puisse exister,\nsurtout avec une barbe de 5 jours!",
+    "La technique de la blanquette de veau est née en Chine,\nlorsque la mousse tache."
+];
 
 function typeParse(mt) {
     var res;
@@ -50,6 +59,12 @@ function typeParse(mt) {
         case "MT_SURVIVAL":
             res = "Survie";
             break;
+        case "MT_EXCAVATE":
+            res = "Excavation";
+            break;
+        case "MT_SABOTAGE":
+            res = "Sabotage";
+            break;
         default:
             res = mt;
             break;
@@ -61,6 +76,15 @@ function sectorParse(sn) {
     var res;
     var id = sn.substring(sn.lastIndexOf('e') + 1);
     switch (id) {
+        case "3":
+            res = "Uranus / Cordelia";
+            break;
+        case "7":
+            res = "Saturn / Epimetheus";
+            break;
+        case "35":
+            res = "Mars / Arcadia";
+            break;
         case "42":
             res = "Saturn / Hélène";
             break;
@@ -88,6 +112,15 @@ function sectorParse(sn) {
         case "155":
             res = "Eris / Cosis";
             break;
+        case "164":
+            res = "Eris / Kala-azar";
+            break;
+        case "174":
+            res = "Eris / Sparga";
+            break;
+        case "187":
+            res = "Eris / Selkie";
+            break;
         case "207":
             res = "Europe / Gamygyn";
             break;
@@ -101,9 +134,17 @@ function sectorParse(sn) {
 botPrime.on("message", function(message) {
     
     switch (message.content) {
-        case "Hi":
-            botPrime.reply(message, "Chalut!");
+        case "!help":
+            var helpMsg = "Alors, noob, on connait pas les commandes ?\n";
+            helpMsg += "\t- !help:    affiche ce message.\n";
+            helpMsg += "\t- !alerts:  affiche les alertes Warframe du moment.\n";
+            helpMsg += "\t- !baro:    affiche les informations liées au Void Trader.\n\n";
+            helpMsg += "Et ne me fais pas répéter !\n";
+            botPrime.reply(message, helpMsg);
             break;
+        
+
+            
         case "!alerts":
             var wfdata = "http://content.warframe.com/dynamic/worldState.php";
             request({
@@ -130,17 +171,65 @@ botPrime.on("message", function(message) {
                         };
                         result += "\n";
                     });
-                    botPrime.reply(message, result);
+                    if (result != "")
+                        botPrime.reply(message, result);
+                    else
+                        botPrime.reply(message, "Aucune alerte en cours.");
                 }
                 else {
                     botPrime.reply(message, "Données inaccessibles.");
                 };
             })
             break;
-    
+            
+        case "!baro":
+            var wfdata = "http://content.warframe.com/dynamic/worldState.php";
+            request({
+                url: wfdata,
+                json: true
+            }, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    var result = "\n";
+                    result += "Baro'Ki Teer - Void Trader\n";
+                    rmtime = body.VoidTraders[0].Activation.sec - body.Time;
+                    j = Math.floor(rmtime / 86400);
+                    rmtime = rmtime % 86400;
+                    h = Math.floor(rmtime / 3600);
+                    rmtime = rmtime % 3600;
+                    m = Math.floor(rmtime / 60);
+                    rmtime = rmtime % 60;
+                    result += "Arrive dans " + j + " jours, " + h + " heures, " + m + " minutes et " + rmtime + " secondes.\n";
+                    result += "Il apparaîtra au relais de ";
+                    if (body.VoidTraders[0].Node == "MercuryHUB") result += "Mercure.\n";
+                    else if (body.VoidTraders[0].Node == "SaturnHUB") result += "Saturne.\n";
+                    else result += "Pluton.\n";
+                    if (result != "")
+                        botPrime.reply(message, result);
+                    else
+                        botPrime.reply(message, "Erreur lors de la récupération des données.");
+                }
+            });
+
+        // Easter Eggs
+        case "!ken":
+            res = Math.floor((Math.random() * kenOneLiners.length));
+            botPrime.reply(message, kenOneLiners[res]);
+            break;
+            
+        case "Paladin, niveau 66.":
+            botPrime.reply(message, "Archmâââge, 57.\n");
+            break;
+            
         default:
             break;
     }
 });
 
-botPrime.loginWithToken("MTg2OTAyODk5ODE5ODA2NzIx.Ci4gig.FiM749obbx2xNswN9aPOMC0LkL8");
+botPrime.on("serverNewMember", function(server, user){
+    console.log(user);
+    welcomeMsg = user.name + ", salut belle plante.\nOn en voit pas souvent des comme ça par ici!\n"
+    //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
+})
+
+botPrime.loginWithToken("MTg4MjAzODk5MjE4NDI3OTE0.CjLOCg.OkC3p5Ep-n43KmfSDLtxIq9jBqg");
+console.log("Bot en ligne et prêt!\n");
