@@ -236,13 +236,5 @@ botPrime.on("serverNewMember", function(server, user){
     //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
 })
 
-fs = require('fs')
-fs.readFile('./token', 'utf8', function (err,data) {
-    if (err) {
-        return console.log(err);
-    }
-    else {
-        botPrime.loginWithToken(data);
-        console.log("Bot en ligne et prêt!\n");
-    }
-});
+botPrime.loginWithToken(process.env.TOKEN);
+console.log("Bot en ligne et prêt!\n");
