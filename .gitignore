@@ -1,2 +1,5 @@
 .DS_Store
 token
+/node_modules
+npm-debug.log
+/*.env

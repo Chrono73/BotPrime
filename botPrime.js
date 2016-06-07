@@ -21,7 +21,8 @@ var kenOneLiners = [
     "Nooooon! T'as cassé ma montre!",
     "Nooon! Tu peux pas me laisser comme ça, comme un chien!\nDonne moi au moins, euh, je sais pas moi, de la pâtée!",
     "Evidemment, qui pourrait croire une seconde qu'une vielle femme aussi horrible puisse exister,\nsurtout avec une barbe de 5 jours!",
-    "La technique de la blanquette de veau est née en Chine,\nlorsque la mousse tache."
+    "La technique de la blanquette de veau est née en Chine,\nlorsque la mousse tache.",
+    "L'oiseau du vent, Shu, plus connu sous le nom de Shu, est tombé aux mains du terrible Souther."
 ];
 
 function typeParse(mt) {
@@ -138,13 +139,16 @@ botPrime.on("message", function(message) {
         case "!help":
             var helpMsg = "Alors, noob, on connait pas les commandes ?\n";
             helpMsg += "\t- !help:    affiche ce message.\n";
+            helpMsg += "\t- !git:     affiche le lien du projet GitHub.\n";
             helpMsg += "\t- !alerts:  affiche les alertes Warframe du moment.\n";
             helpMsg += "\t- !baro:    affiche les informations liées au Void Trader.\n\n";
-            helpMsg += "Et ne me fais pas répéter !\n";
+            helpMsg += "Tout ça avec quelques easter eggs. Et ne me fais pas répéter !\n";
             botPrime.reply(message, helpMsg);
             break;
         
-
+        case "!git":
+            botPrime.reply(message, "https://github.com/Chrono73/BotPrime");
+            break;
             
         case "!alerts":
             var wfdata = "http://content.warframe.com/dynamic/worldState.php";

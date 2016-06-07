@@ -1,0 +1,27 @@
+{
+  "name": "bot-prime",
+  "version": "0.3.0",
+  "description": "My Node Js bot for warframe commands and fun stuff.",
+  "engines": {
+    "node": "6.2.0"
+  },
+  "main": "botPrime.js",
+  "dependencies": {
+    "discord.js": "^7.0.1",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chrono73/BotPrime.git"
+  },
+  "author": "Martin Locqueville",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chrono73/BotPrime/issues"
+  },
+  "homepage": "https://github.com/Chrono73/BotPrime#readme"
+}
