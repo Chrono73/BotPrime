@@ -11,6 +11,7 @@
 
 var Discord = require("discord.js");
 var request = require("request");
+var fs = require("fs");
 
 var botPrime = new Discord.Client();
 
@@ -231,5 +232,13 @@ botPrime.on("serverNewMember", function(server, user){
     //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
 })
 
-botPrime.loginWithToken("MTg4MjAzODk5MjE4NDI3OTE0.CjLOCg.OkC3p5Ep-n43KmfSDLtxIq9jBqg");
-console.log("Bot en ligne et prêt!\n");
+fs = require('fs')
+fs.readFile('./token', 'utf8', function (err,data) {
+    if (err) {
+        return console.log(err);
+    }
+    else {
+        botPrime.loginWithToken(data);
+        console.log("Bot en ligne et prêt!\n");
+    }
+});
