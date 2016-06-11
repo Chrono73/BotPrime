@@ -230,7 +230,7 @@ botPrime.on("message", function(message) {
     }
 });
 
-botPrime.on("serverNewMember", function(server, user){
+botPrime.on("serverNewMember", (server, user) => {
     console.log(user);
     welcomeMsg = user.name + ", salut belle plante.\nOn en voit pas souvent des comme ça par ici!\n"
     //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
