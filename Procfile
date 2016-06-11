@@ -1,1 +1,1 @@
-worker: node botPrime.js
+web: node botPrime.js

@@ -12,6 +12,7 @@
 var Discord = require("discord.js");
 var request = require("request");
 var fs = require("fs");
+var http = require('http');
 
 var botPrime = new Discord.Client();
 
@@ -238,3 +239,8 @@ botPrime.on("serverNewMember", (server, user) => {
 
 botPrime.loginWithToken(process.env.TOKEN);
 console.log("Bot en ligne et prêt!\n");
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.send('it is running\n');
+}).listen(process.env.PORT || 5000);
