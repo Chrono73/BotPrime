@@ -134,6 +134,13 @@ function sectorParse(sn) {
     return res;
 }
 
+botPrime.on("ready"), function(){
+    var connectMsg = "Bonjour, le bot a été update ! Venez voir les changements sur le GitHub!";
+    botPrime.servers.forEach(function(serv){
+        botPrime.sendMessage(serv.defaultChannel, connectMsg);
+    })
+}
+
 botPrime.on("message", function(message) {
     
     switch (message.content) {
