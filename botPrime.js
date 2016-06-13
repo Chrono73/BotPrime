@@ -14,6 +14,8 @@ var request = require("request");
 var fs = require("fs");
 var http = require('http');
 
+var wfdata = "http://content.warframe.com/dynamic/worldState.php";
+
 var botPrime = new Discord.Client();
 
 var kenOneLiners = [
@@ -159,7 +161,6 @@ botPrime.on("message", function(message) {
             break;
             
         case "!alerts":
-            var wfdata = "http://content.warframe.com/dynamic/worldState.php";
             request({
                 url: wfdata,
                 json: true
@@ -196,7 +197,6 @@ botPrime.on("message", function(message) {
             break;
             
         case "!baro":
-            var wfdata = "http://content.warframe.com/dynamic/worldState.php";
             request({
                 url: wfdata,
                 json: true
@@ -222,6 +222,7 @@ botPrime.on("message", function(message) {
                         botPrime.reply(message, "Erreur lors de la récupération des données.");
                 }
             });
+            break;
 
         // Easter Eggs
         case "!ken":
