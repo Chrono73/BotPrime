@@ -13,6 +13,7 @@ var Discord = require("discord.js");
 var request = require("request");
 var fs = require("fs");
 var http = require('http');
+var sectorNames = require('./data/secotrNames.json');
 
 var wfdata = "http://content.warframe.com/dynamic/worldState.php";
 
@@ -168,7 +169,7 @@ botPrime.on("message", function(message) {
                 if (!error && response.statusCode === 200) {
                     var result = "\n";
                     body.Alerts.forEach( function(alert, index) {
-                        result += sectorParse(alert.MissionInfo.location) + " - ";
+                        result += sectorNames[alert.MissionInfo.location] + " - ";
                         result += typeParse(alert.MissionInfo.missionType) + " - ";
                         result += alert.MissionInfo.missionReward.credits + "cr";
                         if (alert.MissionInfo.missionReward.hasOwnProperty('countedItems')) {
