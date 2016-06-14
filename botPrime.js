@@ -141,7 +141,7 @@ botPrime.on("message", function(message) {
                             })
                         };
                         rmtime = rmtime = computeTime(alert.Expiry.sec - body.Time);
-                        result += " - " + rmtime[3] + "m, " + rmtime[4] + "s restantes";
+                        result += " - " + rmtime[2] + "m, " + rmtime[3] + "s restantes";
                         result += "\n";
                     });
                     if (result != "")
