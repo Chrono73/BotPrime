@@ -13,7 +13,7 @@ var Discord = require("discord.js");
 var request = require("request");
 var fs = require("fs");
 var http = require('http');
-var sectorNames = require('./data/secotrNames.json');
+var sectorNames = require('./data/sectorNames.json');
 
 var wfdata = "http://content.warframe.com/dynamic/worldState.php";
 
