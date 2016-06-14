@@ -24,9 +24,13 @@ var kenOneLiners = [
     "Les machoires de mes ennemis sont comme le téléphone.\nAprès quelques coups, ça décroche.",
     "Nooooon! T'as cassé ma montre!",
     "Nooon! Tu peux pas me laisser comme ça, comme un chien!\nDonne moi au moins, euh, je sais pas moi, de la pâtée!",
-    "Evidemment, qui pourrait croire une seconde qu'une vielle femme aussi horrible puisse exister,\nsurtout avec une barbe de 5 jours!",
     "La technique de la blanquette de veau est née en Chine,\nlorsque la mousse tache.",
-    "L'oiseau du vent, Shu, plus connu sous le nom de Shu, est tombé aux mains du terrible Souther."
+    "L'oiseau du vent, Shu, plus connu sous le nom de Shu, est tombé aux mains du terrible Souther.",
+    "La technique de la Grande Ourse est d'une puissance incalculable,\nmoi-même j'ai des difficultés pour la calculer.",
+    "Cette attaque est redoutable... elle est si rapide et si tranchante,\nque lorsque le sang jaillit, ooh, c'est déjà un bloc de glace à la vanille,\net le corps de l'adversaire est bleui par le froid.",
+    "Eh bien si lui fait des miracles, tu peux m'appeler Jean-Baptiste.",
+    "Tu es Ken le survivant et tu as suivi l'enseignement de l'école du Hokuto, ou tard?\n- Plutôt tard...\n- Plutôt tard que jamais, là est le principal.",
+    "Attaque Nanto, le poing du guerrier dans la figure !\n- Attaque Hokuto, coup de pied volant avec pointure !"
 ];
 
 function typeParse(mt) {
@@ -78,65 +82,6 @@ function typeParse(mt) {
     return res;
 };
 
-function sectorParse(sn) {
-    var res;
-    var id = sn.substring(sn.lastIndexOf('e') + 1);
-    switch (id) {
-        case "3":
-            res = "Uranus / Cordelia";
-            break;
-        case "7":
-            res = "Saturn / Epimetheus";
-            break;
-        case "35":
-            res = "Mars / Arcadia";
-            break;
-        case "42":
-            res = "Saturn / Hélène";
-            break;
-        case "52":
-            res = "Uranus / Portia";
-            break;
-        case "65":
-            res = "Mars / Gradivus";
-            break;
-        case "75":
-            res = "Terre / Lua";
-            break;
-        case "78":
-            res = "Neptune / Triton";
-            break;
-        case "121":
-            res = "Jupiter / Carpo";
-            break;
-        case "125":
-            res = "Jupiter / Io";
-            break;
-        case "135":
-            res = "Céres / Thon";
-            break;
-        case "155":
-            res = "Eris / Cosis";
-            break;
-        case "164":
-            res = "Eris / Kala-azar";
-            break;
-        case "174":
-            res = "Eris / Sparga";
-            break;
-        case "187":
-            res = "Eris / Selkie";
-            break;
-        case "207":
-            res = "Europe / Gamygyn";
-            break;
-        default:
-            res = sn;
-            break;
-    }
-    return res;
-}
-
 /*botPrime.on("ready"), function(){
     var connectMsg = "Bonjour, le bot a été update ! Venez voir les changements sur le GitHub!";
     botPrime.servers.forEach(function(serv){
@@ -169,7 +114,8 @@ botPrime.on("message", function(message) {
                 if (!error && response.statusCode === 200) {
                     var result = "\n";
                     body.Alerts.forEach( function(alert, index) {
-                        result += sectorNames[alert.MissionInfo.location] + " - ";
+                        var sector = sectorNames[alert.MissionInfo.location].split("|");
+                        result += sector[0] + ", " + sector[1] + " - ";
                         result += typeParse(alert.MissionInfo.missionType) + " - ";
                         result += alert.MissionInfo.missionReward.credits + "cr";
                         if (alert.MissionInfo.missionReward.hasOwnProperty('countedItems')) {
@@ -233,6 +179,10 @@ botPrime.on("message", function(message) {
             
         case "Paladin, niveau 66.":
             botPrime.reply(message, "Archmâââge, 57.\n");
+            break;
+        case "On fouille les cadavres pour le butin.":
+        cible = message.server.members[Math.floor((Math.random() * message.server.members.length))].username;
+            botPrime.reply(message, "Trop tard, "+cible+" s'en est déjà chargé pendant que vous vous battiez.\n");
             break;
             
         default:
