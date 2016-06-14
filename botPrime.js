@@ -27,7 +27,7 @@ var kenOneLiners = [
     "La technique de la blanquette de veau est née en Chine,\nlorsque la mousse tache.",
     "L'oiseau du vent, Shu, plus connu sous le nom de Shu, est tombé aux mains du terrible Souther.",
     "La technique de la Grande Ourse est d'une puissance incalculable,\nmoi-même j'ai des difficultés pour la calculer.",
-    "Cette attaque est redoutable... elle est si rapide et si tranchante,\nque lorsque le sang jaillit, ooh, c'est déjà un bloc de glace à la vanille,\net le corps de l'adversaire est bleui par le froid.",
+    "Cette attaque est redoutable... elle est si rapide et si tranchante,\nque lorsque le sang jaillit... Oooh, c'est déjà un bloc de glace à la vanille,\net le corps de l'adversaire est bleui par le froid.",
     "Eh bien si lui fait des miracles, tu peux m'appeler Jean-Baptiste.",
     "Tu es Ken le survivant et tu as suivi l'enseignement de l'école du Hokuto, ou tard?\n- Plutôt tard...\n- Plutôt tard que jamais, là est le principal.",
     "Attaque Nanto, le poing du guerrier dans la figure !\n- Attaque Hokuto, coup de pied volant avec pointure !"
@@ -82,6 +82,16 @@ function typeParse(mt) {
     return res;
 };
 
+function computeTime(time) {
+    j = Math.floor(time / 86400);
+    time = time % 86400;
+    h = Math.floor(time / 3600);
+    time = time % 3600;
+    m = Math.floor(time / 60);
+    s = time % 60;
+    return [j, h, m, s];
+}
+
 /*botPrime.on("ready"), function(){
     var connectMsg = "Bonjour, le bot a été update ! Venez voir les changements sur le GitHub!";
     botPrime.servers.forEach(function(serv){
@@ -130,6 +140,8 @@ botPrime.on("message", function(message) {
                                 result += reward.substring(reward.lastIndexOf('/')+1);
                             })
                         };
+                        rmtime = rmtime = computeTime(alert.Expiry.sec - body.Time);
+                        result += " - " + rmtime[3] + "m, " + rmtime[4] + "s restantes";
                         result += "\n";
                     });
                     if (result != "")
@@ -151,14 +163,8 @@ botPrime.on("message", function(message) {
                 if (!error && response.statusCode === 200) {
                     var result = "\n";
                     result += "Baro'Ki Teer - Void Trader\n";
-                    rmtime = body.VoidTraders[0].Activation.sec - body.Time;
-                    j = Math.floor(rmtime / 86400);
-                    rmtime = rmtime % 86400;
-                    h = Math.floor(rmtime / 3600);
-                    rmtime = rmtime % 3600;
-                    m = Math.floor(rmtime / 60);
-                    rmtime = rmtime % 60;
-                    result += "Arrive dans " + j + " jours, " + h + " heures, " + m + " minutes et " + rmtime + " secondes.\n";
+                    rmtime = computeTime(body.VoidTraders[0].Activation.sec - body.Time);
+                    result += "Arrive dans " + rmtime[0] + " jours, " + rmtime[1] + " heures, " + rmtime[2] + " minutes et " + rmtime[3] + " secondes.\n";
                     result += "Il apparaîtra au relais de ";
                     if (body.VoidTraders[0].Node == "MercuryHUB") result += "Mercure.\n";
                     else if (body.VoidTraders[0].Node == "SaturnHUB") result += "Saturne.\n";
