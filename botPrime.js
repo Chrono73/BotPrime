@@ -33,6 +33,8 @@ var kenOneLiners = [
     "Attaque Nanto, le poing du guerrier dans la figure !\n- Attaque Hokuto, coup de pied volant avec pointure !"
 ];
 
+var rufFlightAcademyLessons = 0;
+
 function typeParse(mt) {
     var res;
     switch (mt) {
