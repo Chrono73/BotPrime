@@ -182,15 +182,27 @@ botPrime.on("message", function(message) {
             res = Math.floor((Math.random() * kenOneLiners.length));
             botPrime.reply(message, kenOneLiners[res]);
             break;
-            
+
         case "Paladin, niveau 66.":
             botPrime.reply(message, "Archmâââge, 57.\n");
             break;
+
         case "On fouille les cadavres pour le butin.":
         cible = message.server.members[Math.floor((Math.random() * message.server.members.length))].username;
             botPrime.reply(message, "Trop tard, "+cible+" s'en est déjà chargé pendant que vous vous battiez.\n");
             break;
             
+        case "!bluekutku":
+            if (rufFlightAcademyLessons==2) {
+                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.\nBut at least Kseniva knows how to fly.");
+                rufFlightAcademyLessons = 0;
+            }
+            else {
+                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.\nBut at least Kseniva knows how to fly.");
+                rufFlightAcademyLessons++;
+            }
+            break;
+
         default:
             break;
     }
