@@ -200,7 +200,7 @@ botPrime.on("message", function(message) {
                 rufFlightAcademyLessons = 0;
             }
             else {
-                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.\nBut at least Kseniva knows how to fly.");
+                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.");
                 rufFlightAcademyLessons++;
             }
             break;
