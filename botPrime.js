@@ -195,13 +195,15 @@ botPrime.on("message", function(message) {
             break;
             
         case "!bluekutku":
+            var prime = 0;
             if (rufFlightAcademyLessons==2) {
-                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.\nBut at least Kseniva knows how to fly.");
+                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nMission failed.\nReturning to Great Hall.\nBut at least Kseniva knows how to fly now.");
                 rufFlightAcademyLessons = 0;
             }
             else {
-                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to 0.\nMission failed.\nReturning to camp.");
                 rufFlightAcademyLessons++;
+                prime = 9999 - 3333*rufFlightAcademyLessons;
+                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nReturning to camp.");
             }
             break;
 
