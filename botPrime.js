@@ -15,48 +15,12 @@ var fs = require("fs");
 var http = require('http');
 
 var sectorNames = require('./data/sectorNames.json');
+var sortie = require('./data/sortie.json');
 var easter = require("./data/easter.json");
 
 var wfdata = "http://content.warframe.com/dynamic/worldState.php";
 
 var botPrime = new Discord.Client();
-
-var sortieBosses = [
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "du Raptor"
-];
-
-var sortieMissions = [
-    "?",
-    "Survie",
-    "?",
-    "Sabotage",
-    "?",
-    "?",
-    "?",
-    "?",
-    "?",
-    "Assassinat"
-];
-
-var sortieMods = [
-    "?",
-    "?",
-    "Amélioration physique des ennemis",
-    "Réduction d'Energie",
-    "?",
-    "Pistolets uniquement"
-];
 
 var rufFlightAcademyLessons = 0;
 
@@ -129,155 +93,165 @@ function computeTime(time) {
 }*/
 
 botPrime.on("message", function(message) {
-    
-    switch (message.content) {
-        case "!help":
-            var helpMsg = "Alors, noob, on connait pas les commandes ?\n";
-            helpMsg += "\t- !help:    affiche ce message.\n";
-            helpMsg += "\t- !git:     affiche le lien du projet GitHub.\n";
-            helpMsg += "\t- !alerts:  affiche les alertes Warframe du moment.\n";
-            helpMsg += "\t- !sortie:  affiche les trois missions de la sortie d'aujourd'hui.\n";
-            helpMsg += "\t- !baro:    affiche les informations liées au Void Trader.\n\n";
-            helpMsg += "Tout ça avec quelques easter eggs. Et ne me fais pas répéter !\n";
-            botPrime.reply(message, helpMsg);
-            break;
-        //========================
-        
-        case "!git":
-            botPrime.reply(message, "https://github.com/Chrono73/BotPrime");
-            break;
-        //========================
+    if (message.content.charAt(0)=='!'){
+        var command = message.content.substring(message.content.indexOf('!')+1).split(" ");
+        switch (command[0]) {
+            case "help":
+                var helpMsg = "Alors, noob, on connait pas les commandes ?\n";
+                helpMsg += "\t- !help:    affiche ce message.\n";
+                helpMsg += "\t- !git:     affiche le lien du projet GitHub.\n";
+                helpMsg += "\t- !alerts:  affiche les alertes Warframe du moment.\n";
+                helpMsg += "\t- !sortie:  affiche les trois missions de la sortie d'aujourd'hui.\n";
+                helpMsg += "\t- !baro:    affiche les informations liées au Void Trader.\n\n";
+                helpMsg += "Tout ça avec quelques easter eggs. Et ne me fais pas répéter !\n";
+                botPrime.reply(message, helpMsg);
+                break;
+            //========================
             
-        case "!alerts":
-            request({
-                url: wfdata,
-                json: true
-            }, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    var result = "\n";
-                    body.Alerts.forEach( function(alert, index) {
-                        var sector = sectorNames[alert.MissionInfo.location].split("|");
-                        result += sector[0] + ", " + sector[1] + " - ";
-                        result += typeParse(alert.MissionInfo.missionType) + " - ";
-                        result += alert.MissionInfo.missionReward.credits + "cr";
-                        if (alert.MissionInfo.missionReward.hasOwnProperty('countedItems')) {
-                            alert.MissionInfo.missionReward.countedItems.forEach( function(reward, index) {
-                                result += " - " + reward.ItemCount + "x ";
-                                result += reward.ItemType.substring(reward.ItemType.lastIndexOf('/')+1);
-                            })
-                        };
-                        if (alert.MissionInfo.missionReward.hasOwnProperty('items')) {
-                            alert.MissionInfo.missionReward.items.forEach( function(reward, index) {
-                                result += " - 1x ";
-                                result += reward.substring(reward.lastIndexOf('/')+1);
-                            })
-                        };
-                        rmtime = computeTime(alert.Expiry.sec - body.Time);
-                        result += " - " + rmtime[2] + "m, " + rmtime[3] + "s restantes";
-                        result += "\n";
-                    });
-                    if (result != "")
-                        botPrime.reply(message, result);
-                    else
-                        botPrime.reply(message, "Aucune alerte en cours.");
-                }
-                else {
-                    botPrime.reply(message, "Données inaccessibles.");
-                };
-            })
-            break;
-        //========================
-
-        case "!sortie":
-            request({
-                url: wfdata,
-                json: true
-            }, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    var result = "Battez les troupes " + sortieBosses[body.Sorties[0].Variants[0].bossIndex] + "!\n";
-                    var missionCount = 1;
-                    body.Sorties[0].Variants.forEach( function(sortie){
-                        result += "Mission "+missionCount+": "+sortieMissions[sortie.missionIndex]+" / "+sortieMods[sortie.modifierIndex]+"\n";
-                        missionCount++;
-                    })
-                    rmtime = computeTime(body.Sorties[0].Expiry.sec - body.Time);
-                    result += "Temps restant: " + rmtime[1] + "h, " + rmtime[2] + "m, " + rmtime[3] + "s restantes";
-                    botPrime.reply(message, result);
-                }
-            });
-            break;
-        //========================
-            
-        case "!baro":
-            request({
-                url: wfdata,
-                json: true
-            }, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    var result = "\n";
-                    result += "Baro'Ki Teer - Void Trader\n";
-                    if (body.VoidTraders[0].hasOwnProperty("Manifest")) {
-                        rmtime = computeTime(body.VoidTraders[0].Expiry.sec - body.Time);
-                        result += "Part dans " + rmtime[0] + " jour, " + rmtime[1] + " heures, " + rmtime[2] + " minutes et " + rmtime[3] + " secondes.\n";
-                        body.VoidTraders[0].Manifest.forEach( function(item){
-                            result += item.ItemType.substring(reward.lastIndexOf('/')+1); + " - " + item.PrimePrice + " ducats & " + item.RegularPrice + "cr\n";
+            case "git":
+                botPrime.reply(message, "https://github.com/Chrono73/BotPrime");
+                break;
+            //========================
+                
+            case "alerts":
+                request({
+                    url: wfdata,
+                    json: true
+                }, function (error, response, body) {
+                    if (!error && response.statusCode === 200) {
+                        var result = "\n";
+                        body.Alerts.forEach( function(alert, index) {
+                            var sector = sectorNames[alert.MissionInfo.location].split("|");
+                            result += sector[0] + ", " + sector[1] + " - ";
+                            result += typeParse(alert.MissionInfo.missionType) + " - ";
+                            result += alert.MissionInfo.missionReward.credits + "cr";
+                            if (alert.MissionInfo.missionReward.hasOwnProperty('countedItems')) {
+                                alert.MissionInfo.missionReward.countedItems.forEach( function(reward, index) {
+                                    result += " - " + reward.ItemCount + "x ";
+                                    result += reward.ItemType.substring(reward.ItemType.lastIndexOf('/')+1);
+                                })
+                            };
+                            if (alert.MissionInfo.missionReward.hasOwnProperty('items')) {
+                                alert.MissionInfo.missionReward.items.forEach( function(reward, index) {
+                                    result += " - 1x ";
+                                    result += reward.substring(reward.lastIndexOf('/')+1);
+                                })
+                            };
+                            rmtime = computeTime(alert.Expiry.sec - body.Time);
+                            result += " - " + rmtime[2] + "m, " + rmtime[3] + "s restantes";
+                            result += "\n";
                         });
                         if (result != "")
                             botPrime.reply(message, result);
                         else
-                            botPrime.reply(message, "Erreur lors de la récupération des données.");
+                            botPrime.reply(message, "Aucune alerte en cours.");
                     }
                     else {
-                        rmtime = computeTime(body.VoidTraders[0].Activation.sec - body.Time);
-                        result += "Arrive dans " + rmtime[0] + " jours, " + rmtime[1] + " heures, " + rmtime[2] + " minutes et " + rmtime[3] + " secondes.\n";
-                        result += "Il apparaîtra au relais de ";
-                        if (body.VoidTraders[0].Node == "MercuryHUB") result += "Mercure.\n";
-                        else if (body.VoidTraders[0].Node == "SaturnHUB") result += "Saturne.\n";
-                        else result += "Pluton.\n";
-                        if (result != "")
-                            botPrime.reply(message, result);
-                        else
-                            botPrime.reply(message, "Erreur lors de la récupération des données.");
+                        botPrime.reply(message, "Données inaccessibles.");
+                    };
+                })
+                break;
+            //========================
+
+            case "sortie":
+                request({
+                    url: wfdata,
+                    json: true
+                }, function (error, response, body) {
+                    if (!error && response.statusCode === 200) {
+                        var result = "Battez les troupes " + sortie.bosses[body.Sorties[0].Variants[0].bossIndex] + "!\n";
+                        var missionCount = 1;
+                        body.Sorties[0].Variants.forEach( function(sortieMission){
+                            result += "Mission "+missionCount+": "+sortie.missions[sortieMission.missionIndex]+" / "+sortie.modifiers[sortieMission.modifierIndex]+"\n";
+                            missionCount++;
+                        })
+                        rmtime = computeTime(body.Sorties[0].Expiry.sec - body.Time);
+                        result += "Temps restant: " + rmtime[1] + "h, " + rmtime[2] + "m, " + rmtime[3] + "s restantes";
+                        botPrime.reply(message, result);
                     }
+                });
+                break;
+            //========================
+                
+            case "baro":
+                request({
+                    url: wfdata,
+                    json: true
+                }, function (error, response, body) {
+                    if (!error && response.statusCode === 200) {
+                        var result = "\n";
+                        result += "Baro'Ki Teer - Void Trader\n";
+                        if (body.VoidTraders[0].hasOwnProperty("Manifest")) {
+                            rmtime = computeTime(body.VoidTraders[0].Expiry.sec - body.Time);
+                            result += "Part dans " + rmtime[0] + " jour, " + rmtime[1] + " heures, " + rmtime[2] + " minutes et " + rmtime[3] + " secondes.\n";
+                            body.VoidTraders[0].Manifest.forEach( function(item){
+                                result += item.ItemType.substring(reward.lastIndexOf('/')+1); + " - " + item.PrimePrice + " ducats & " + item.RegularPrice + "cr\n";
+                            });
+                            if (result != "")
+                                botPrime.reply(message, result);
+                            else
+                                botPrime.reply(message, "Erreur lors de la récupération des données.");
+                        }
+                        else {
+                            rmtime = computeTime(body.VoidTraders[0].Activation.sec - body.Time);
+                            result += "Arrive dans " + rmtime[0] + " jours, " + rmtime[1] + " heures, " + rmtime[2] + " minutes et " + rmtime[3] + " secondes.\n";
+                            result += "Il apparaîtra au relais de ";
+                            if (body.VoidTraders[0].Node == "MercuryHUB") result += "Mercure.\n";
+                            else if (body.VoidTraders[0].Node == "SaturnHUB") result += "Saturne.\n";
+                            else result += "Pluton.\n";
+                            if (result != "")
+                                botPrime.reply(message, result);
+                            else
+                                botPrime.reply(message, "Erreur lors de la récupération des données.");
+                        }
+                    }
+                });
+                break;
+            //========================
+
+            // Easter Eggs
+            case "ken":
+                res = Math.floor((Math.random() * easter.kenOneLiners.length));
+                botPrime.reply(message, easter.kenOneLiners[res]);
+                break;
+            //========================
+
+            /*case "Paladin, niveau 66.":
+                botPrime.reply(message, "Archmâââge, 57.\n");
+                break;
+            //========================
+
+            case "On fouille les cadavres pour le butin.":
+                cible = message.server.members[Math.floor((Math.random() * message.server.members.length))].username;
+                botPrime.reply(message, "Trop tard, "+cible+" s'en est déjà chargé pendant que vous vous battiez.\n");
+                break;*/
+            //========================
+                
+            case "bluekutku":
+                var prime = 0;
+                if (rufFlightAcademyLessons==2) {
+                    botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nMission failed.\nReturning to Great Hall.\nBut at least Kseniva knows how to fly now.");
+                    rufFlightAcademyLessons = 0;
                 }
-            });
-            break;
-        //========================
+                else {
+                    rufFlightAcademyLessons++;
+                    prime = 9999 - 3333*rufFlightAcademyLessons;
+                    botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nReturning to camp.");
+                }
+                break;
+            //========================
 
-        // Easter Eggs
-        case "!ken":
-            res = Math.floor((Math.random() * easter.kenOneLiners.length));
-            botPrime.reply(message, easter.kenOneLiners[res]);
-            break;
-        //========================
+            case "post":
+                if (command.length == 2)
+                    botPrime.sendMessage(message.channel, "Seigneur "+command[1]+", vous avez un postérieur, ma foi, très hospitalier!");
+                else
+                    botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
+                break;
 
-        case "Paladin, niveau 66.":
-            botPrime.reply(message, "Archmâââge, 57.\n");
-            break;
-        //========================
-
-        case "On fouille les cadavres pour le butin.":
-            cible = message.server.members[Math.floor((Math.random() * message.server.members.length))].username;
-            botPrime.reply(message, "Trop tard, "+cible+" s'en est déjà chargé pendant que vous vous battiez.\n");
-            break;
-        //========================
-            
-        case "!bluekutku":
-            var prime = 0;
-            if (rufFlightAcademyLessons==2) {
-                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nMission failed.\nReturning to Great Hall.\nBut at least Kseniva knows how to fly now.");
-                rufFlightAcademyLessons = 0;
-            }
-            else {
-                rufFlightAcademyLessons++;
-                prime = 9999 - 3333*rufFlightAcademyLessons;
-                botPrime.reply(message, "\nKseniva carted.\nQuest reward reduced to "+prime+".\nReturning to camp.");
-            }
-            break;
-        //========================
-
-        default:
-            break;
+            default:
+                botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
+                break;
+        }
     }
 });
 
