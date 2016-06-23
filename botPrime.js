@@ -241,6 +241,10 @@ botPrime.on("message", function(message) {
                 break;
             //========================
 
+            case "pokeball":
+                botPrime.sendMessage(message.channel, "MEURISSON!!!");
+                break;
+
             case "post":
                 if (command.length == 2)
                     botPrime.sendMessage(message.channel, "Seigneur "+command[1]+", vous avez un postérieur, ma foi, très hospitalier!");
