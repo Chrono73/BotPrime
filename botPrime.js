@@ -265,6 +265,10 @@ botPrime.on("serverNewMember", (server, user) => {
     //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
 })
 
+botPrime.on("disconnected", function(){
+    botPrime.loginWithToken(process.env.TOKEN);
+})
+
 /*
 fs.readFile('./token', 'utf8', function read(err, token){
     if (err) {
