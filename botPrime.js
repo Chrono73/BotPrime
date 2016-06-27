@@ -246,8 +246,12 @@ botPrime.on("message", function(message) {
                 break;
 
             case "post":
-                if (command.length == 2)
-                    botPrime.sendMessage(message.channel, "Seigneur "+command[1]+", vous avez un postérieur, ma foi, très hospitalier!");
+                if (command.length >= 2) {
+                    var reply = "Seigneur ";
+                    for (i=1; i<=command.length -1; i++) reply += command[i];
+                    reply += ", vous avez un postérieur, ma foi, très hospitalier!";
+                    botPrime.sendMessage(message.channel, reply);
+                }
                 else
                     botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
                 break;
