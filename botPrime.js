@@ -248,7 +248,7 @@ botPrime.on("message", function(message) {
             case "post":
                 if (command.length >= 2) {
                     var reply = "Seigneur ";
-                    for (i=1; i<=command.length -1; i++) reply += command[i];
+                    for (i=1; i<=command.length -1; i++) reply += command[i] + " ";
                     reply += ", vous avez un postérieur, ma foi, très hospitalier!";
                     botPrime.sendMessage(message.channel, reply);
                 }
