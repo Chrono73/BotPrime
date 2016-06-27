@@ -254,7 +254,6 @@ botPrime.on("message", function(message) {
                         bounty[Math.floor((Math.random() * easter.rKushDrops.length))]++;
                     }
                 }
-                console.log(bounty);
                 var reply = "Quest complete! Returning to camp in 1m.\n\n";
                 reply += "==== Quest rewards ====\n";
                 bounty.forEach(function(nb, index) {
