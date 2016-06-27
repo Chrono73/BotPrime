@@ -212,7 +212,7 @@ botPrime.on("message", function(message) {
             // Easter Eggs
             case "ken":
                 res = Math.floor((Math.random() * easter.kenOneLiners.length));
-                botPrime.reply(message, easter.kenOneLiners[res]);
+                botPrime.reply(message, "```"+easter.kenOneLiners[res]+"```");
                 break;
             //========================
 
@@ -241,9 +241,33 @@ botPrime.on("message", function(message) {
                 break;
             //========================
 
+            case "corona":
+                nbDrops = Math.floor((Math.random() * 4)) + 4;
+                var bounty = [0,0,0,0,0,0,0,0,0,0,0];
+                if (message.author.username=="DGKun") {
+                    for (i=0; i<nbDrops; i++) {
+                        bounty[Math.floor((Math.random() * easter.rKushDrops.length-1))]++;
+                    }
+                }
+                else {
+                    for (i=0; i<nbDrops; i++) {
+                        bounty[Math.floor((Math.random() * easter.rKushDrops.length))]++;
+                    }
+                }
+                console.log(bounty);
+                var reply = "Quest complete! Returning to camp in 1m.\n\n";
+                reply += "==== Quest rewards ====\n";
+                bounty.forEach(function(nb, index) {
+                    if (nb!=0) reply += nb+"x "+easter.rKushDrops[index]+"\n";
+                })
+                botPrime.reply(message, reply);
+                break;
+            //========================
+
             case "pokeball":
                 botPrime.sendMessage(message.channel, "MEURISSON!!!");
                 break;
+            //========================
 
             case "post":
                 if (command.length >= 2) {
@@ -255,6 +279,7 @@ botPrime.on("message", function(message) {
                 else
                     botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
                 break;
+            //========================
 
             default:
                 botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
@@ -273,8 +298,8 @@ botPrime.on("disconnected", function(){
     botPrime.loginWithToken(process.env.TOKEN);
 })
 
-/*
-fs.readFile('./token', 'utf8', function read(err, token){
+
+/*fs.readFile('./token', 'utf8', function read(err, token){
     if (err) {
         throw err;
     }
