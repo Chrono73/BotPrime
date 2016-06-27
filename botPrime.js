@@ -298,8 +298,8 @@ botPrime.on("disconnected", function(){
     botPrime.loginWithToken(process.env.TOKEN);
 })
 
-
-/*fs.readFile('./token', 'utf8', function read(err, token){
+/*
+fs.readFile('./token', 'utf8', function read(err, token){
     if (err) {
         throw err;
     }
@@ -307,8 +307,8 @@ botPrime.on("disconnected", function(){
         botPrime.loginWithToken(token);
         console.log("Bot en ligne et prêt!\n");
     }
-});*/
-
+});
+*/
 
 botPrime.loginWithToken(process.env.TOKEN);
 console.log("Bot en ligne et prêt!\n");
