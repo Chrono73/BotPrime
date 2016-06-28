@@ -99,7 +99,7 @@ botPrime.on("message", function(message) {
             case "help":
                 var helpMsg = "Alors, noob, on connait pas les commandes ?\n";
                 helpMsg += "\t- !help:    affiche ce message.\n";
-                helpMsg += "\t- !git:     affiche le lien du projet GitHub.\n";
+                helpMsg += "\t- !git:      affiche le lien du projet GitHub.\n";
                 helpMsg += "\t- !alerts:  affiche les alertes Warframe du moment.\n";
                 helpMsg += "\t- !sortie:  affiche les trois missions de la sortie d'aujourd'hui.\n";
                 helpMsg += "\t- !baro:    affiche les informations liées au Void Trader.\n\n";
@@ -287,10 +287,9 @@ botPrime.on("message", function(message) {
     }
 });
 
-botPrime.on("serverNewMember", (server, user) => {
-    console.log(user);
-    welcomeMsg = user.name + ", salut belle plante.\nOn en voit pas souvent des comme ça par ici!\n"
-    //botPrime.sendMessage(server.defaultChannel, welcomeMsg);
+botPrime.on("serverNewMember", function(server, user) {
+    welcomeMsg = user.mention() + ", salut belle plante.\nOn en voit pas souvent des comme ça par ici!\n"
+    botPrime.sendMessage(server.defaultChannel, welcomeMsg);
 })
 
 botPrime.on("disconnected", function(){
