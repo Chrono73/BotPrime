@@ -209,6 +209,125 @@ botPrime.on("message", function(message) {
                 break;
             //========================
 
+            case "go":
+
+                function checkForGoRoles() {
+                    var valor =0, mystic = 0, instinct = 0;
+                    message.channel.server.roles.forEach(function(role) {
+                        if (role.name==="Valor") valor = 1;
+                        if (role.name==="Mystic") mystic = 1;
+                        if (role.name==="Instinct") instinct = 1;
+                    });
+                    if (valor==0) 
+                        message.channel.server.createRole({
+                            color : 0xFF0000,
+                            hoist : false,
+                            name : "Valor",
+                            permissions : ["sendMessages"],
+                            mentionable : true
+                        }, function(error, role){
+                            if (error) console.log(error);
+                        });
+                    if (mystic==0) 
+                        message.channel.server.createRole({
+                            color : 0x3366FF,
+                            hoist : false,
+                            name : "Mystic",
+                            permissions : ["sendMessages"],
+                            mentionable : true
+                        }, function(error, role){
+                            if (error) console.log(error);
+                        });
+                    if (instinct==0) 
+                        message.channel.server.createRole({
+                            color : 0xFFFF00,
+                            hoist : false,
+                            name : "Instinct",
+                            permissions : ["sendMessages"],
+                            mentionable : true
+                        }, function(error, role){
+                            if (error) console.log(error);
+                        });
+                }
+
+                function getGoRolesIndexes() {
+                    var vmi =[0,0,0];
+                    message.channel.server.roles.forEach(function(role, index) {
+                        if (role.name==="Valor") vmi[0] = index;
+                        if (role.name==="Mystic") vmi[1] = index;
+                        if (role.name==="Instinct") vmi[2] = index;
+                    });
+                    return vmi;
+                }
+
+                function addRole(int) {
+                    botPrime.addMemberToRole(message.author, message.channel.server.roles[vmi[int]], function(error){
+                            if (error) console.log(error)
+                            else console.log("Rôle "+int+" ajouté.");
+                    });
+                }
+
+                function removeRole(int) {
+                    if (botPrime.userHasRole(message.author, message.channel.server.roles[vmi[int]])) {
+                        botPrime.removeMemberFromRole(message.author, message.channel.server.roles[vmi[int]], function (error){
+                            if (error) console.log(error)
+                            else console.log("Rôle "+int+" supprimé.");
+                        });
+                    }    
+                }
+
+                checkForGoRoles();
+                vmi = getGoRolesIndexes();
+
+                switch (command[1]) {
+                    case "Valor":
+                        console.log("Valor demandé.");
+                        addRole(0);
+                        setTimeout(function(){
+                            removeRole(1);
+                        }, 2000);
+                        setTimeout(function(){
+                            removeRole(2);
+                        }, 4000);
+                        break;
+                
+                    case "Mystic":
+                        console.log("Mystic demandé.");
+                        addRole(1);
+                        setTimeout(function(){
+                            removeRole(2);
+                        }, 2000);
+                        setTimeout(function(){
+                            removeRole(0);
+                        }, 4000);
+                        break;
+
+                    case "Instinct":
+                        console.log("Instinct demandé.");
+                        addRole(2);
+                        setTimeout(function(){
+                            removeRole(0);
+                        }, 2000);
+                        setTimeout(function(){
+                            removeRole(1);
+                        }, 4000);                 
+                        break;
+
+                    case "Stop":
+                        removeRole(0);
+                        setTimeout(function(){
+                            removeRole(1);
+                        }, 2000);
+                        setTimeout(function(){
+                            removeRole(2);
+                        }, 4000);
+                        break;
+                };
+                break;
+
+            case "AIRHORN":
+                    break;
+
             // Easter Eggs
             case "ken":
                 res = Math.floor((Math.random() * easter.kenOneLiners.length));
@@ -254,7 +373,6 @@ botPrime.on("message", function(message) {
                         bounty[Math.floor((Math.random() * easter.rKushDrops.length))]++;
                     }
                 }
-                console.log(bounty);
                 var reply = "Quest complete! Returning to camp in 1m.\n\n";
                 reply += "==== Quest rewards ====\n";
                 bounty.forEach(function(nb, index) {
@@ -312,6 +430,7 @@ fs.readFile('./token', 'utf8', function read(err, token){
 
 botPrime.loginWithToken(process.env.TOKEN);
 console.log("Bot en ligne et prêt!\n");
+
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
