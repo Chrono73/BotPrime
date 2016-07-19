@@ -240,7 +240,7 @@ botPrime.on("message", function(message) {
                         });
                     if (instinct==0) 
                         message.channel.server.createRole({
-                            color : 0xFFFF00,
+                            color : 0xE6E600,
                             hoist : false,
                             name : "Instinct",
                             permissions : ["sendMessages"],
@@ -403,6 +403,13 @@ botPrime.on("message", function(message) {
                 botPrime.reply(message, "Commande inconnue. Balance un petit !help, Tenno!");
                 break;
         }
+    }
+    else if (message.content=="Paladin, niveau 66."){
+        botPrime.reply(message, "Archmâââge, 57.\n");
+    }
+    else if (message.content=="On fouille les cadavres pour le butin.") {
+        cible = message.channel.server.members[Math.floor((Math.random() * message.channel.server.members.length))].username;
+        botPrime.reply(message, "Trop tard, "+cible+" s'en est déjà chargé pendant que vous vous battiez.\n");
     }
 });
 
