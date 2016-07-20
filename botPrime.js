@@ -479,7 +479,7 @@ botPrime.on("disconnected", function(){
     botPrime.loginWithToken(process.env.TOKEN);
 })
 
-
+/*
 fs.readFile('./token', 'utf8', function read(err, token){
     if (err) {
         throw err;
@@ -488,12 +488,12 @@ fs.readFile('./token', 'utf8', function read(err, token){
         botPrime.loginWithToken(token);
         console.log("Bot en ligne et prêt!\n");
     }
-});
+});*/
 
-/*
+
 botPrime.loginWithToken(process.env.TOKEN);
 console.log("Bot en ligne et prêt!\n");
-*/
+
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
