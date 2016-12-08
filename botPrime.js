@@ -14,7 +14,7 @@
  //==============================================================================
 
 // Variable permettant de lancer le bot de test (1) ou celui en release (0).
-var devMode = 1;
+var devMode = 0;
 
 // Chargement des modules npm requis.
 var Discord = require("discord.js");
