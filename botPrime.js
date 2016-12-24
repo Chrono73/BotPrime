@@ -40,7 +40,7 @@ botPrime.on("ready", function(){
     connectMsg += ":christmas_tree: BotPrime est de retour, plus festif que jamais! :christmas_tree:\n";
     connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt!";
 
-    if (devMode==1) {
+    if (devMode==0) {
         botPrime.servers.forEach(function(serv){
             botPrime.sendMessage(serv.defaultChannel, connectMsg);
         })
