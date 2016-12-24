@@ -53,7 +53,7 @@ botPrime.on("ready", function(){
 // Fonction appelée à chaque message posté sur un serveur où il est présent.
 botPrime.on("message", function(message) {
 
-    if (christmas_spam == 20) {
+    if (christmas_spam == 10) {
        botPrime.sendMessage(message.channel, ":christmas_tree: :menad: :christmas_tree:");
        christmas_spam = 0;
     }
