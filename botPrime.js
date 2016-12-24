@@ -38,7 +38,7 @@ var botPrime = new Discord.Client();
 botPrime.on("ready", function(){
     var connectMsg = ":christmas_tree: @everyone Joyeux Noël, bande de geeks! :christmas_tree:\n";
     connectMsg += ":christmas_tree: BotPrime est de retour, plus festif que jamais! :christmas_tree:\n";
-    connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt!";
+    connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt! :christmas_tree:";
 
     if (devMode==0) {
         console.log("Envoi des messages de mise à jour");
