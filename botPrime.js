@@ -36,14 +36,16 @@ var botPrime = new Discord.Client();
 
 // Fonction appelée lorsque le bot est prêt à l'utilisation.
 botPrime.on("ready", function(){
-    var connectMsg = ":christmas_tree: @everyone Joyeux Noël, bande de geeks! :christmas_tree:\n";
+    var connectMsg = ":christmas_tree: @everyone Joyeux Noël, bande de geeks!      :christmas_tree:\n";
     connectMsg += ":christmas_tree: BotPrime est de retour, plus festif que jamais! :christmas_tree:\n";
-    connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt! :christmas_tree:";
+    connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt!     :christmas_tree:";
 
     if (devMode==0) {
         console.log("Envoi des messages de mise à jour");
         botPrime.servers.forEach(function(serv){
-            botPrime.sendMessage(serv.defaultChannel, connectMsg);
+            botPrime.sendMessage(serv.defaultChannel, connectMsg, undefined, function(err){
+                if (err) throw err;
+            });
         })
     }
 });
