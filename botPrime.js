@@ -16,6 +16,8 @@
 // Variable permettant de lancer le bot de test (1) ou celui en release (0).
 var devMode = 0;
 
+var christmas_spam = 0;
+
 // Chargement des modules npm requis.
 var Discord = require("discord.js");
 var fs = require("fs");
@@ -34,9 +36,11 @@ var botPrime = new Discord.Client();
 
 // Fonction appelée lorsque le bot est prêt à l'utilisation.
 botPrime.on("ready", function(){
-    var connectMsg = "Bonjour, le bot a été update ! Venez voir les changements sur le GitHub!";
+    var connectMsg = ":christmas_tree: @everyone Joyeux Noël, bande de geeks! :christmas_tree:\n";
+    connectMsg += ":christmas_tree: BotPrime est de retour, plus festif que jamais! :christmas_tree:\n";
+    connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt!";
 
-    if (devMode==0) {
+    if (devMode==1) {
         botPrime.servers.forEach(function(serv){
             botPrime.sendMessage(serv.defaultChannel, connectMsg);
         })
@@ -45,6 +49,13 @@ botPrime.on("ready", function(){
 
 // Fonction appelée à chaque message posté sur un serveur où il est présent.
 botPrime.on("message", function(message) {
+
+    if (christmas_spam == 20) {
+       botPrime.sendMessage(message.channel, ":christmas_tree: :menad: :christmas_tree:");
+       christmas_spam = 0;
+    }
+    else christmas_spam++;
+
 
     // Vérification si le message est une commande
     if (message.content.charAt(0)=='!'){
@@ -87,6 +98,10 @@ botPrime.on("message", function(message) {
 
             case "post":
                 commands.post(message, command, botPrime);
+                break;
+
+            case "seum":
+                commands.seum(message, botPrime);
                 break;
 
             // On ignore les commandes associées au AIRHORN Bot.

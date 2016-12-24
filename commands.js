@@ -203,5 +203,12 @@ module.exports = {
             message.reply("Commande inconnue. Balance un petit !help, Tenno!", false, function(err){
                 if (err) throw err;
             });
+    },
+
+    seum: function(message, client) {
+      var result = "**Une minute de silence en souvenir du Vendredi du Seum, le 16/12/2016.**"
+      client.sendMessage(message.channel, result, undefined, function(err){
+          if (err) throw err;
+      });
     }
 }
