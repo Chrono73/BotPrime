@@ -41,6 +41,7 @@ botPrime.on("ready", function(){
     connectMsg += ":christmas_tree: De nouvelles fonctions à venir très bientôt!";
 
     if (devMode==0) {
+        console.log("Envoi des messages de mise à jour");
         botPrime.servers.forEach(function(serv){
             botPrime.sendMessage(serv.defaultChannel, connectMsg);
         })
@@ -170,7 +171,7 @@ function connect(){
     // En mode release, connecte le bot officiel (token stocké sur Heroku).
     else {
         botPrime.loginWithToken(process.env.TOKEN);
-        console.log("Bot en ligne et prêt!\n");
+        console.log("Bot release en ligne et prêt!\n");
     }
 }
 
